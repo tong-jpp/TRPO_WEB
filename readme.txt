@@ -1,53 +1,72 @@
-culinary_compass/          # корень проекта
+TRPO_WEB/                          # корень проекта
 │
-├── .venv/                 # виртуальный интерпретатор
-│   ├── bin/ (или Scripts/)
-│   ├── lib/
-│   ├── include/
+├── venv/                         # виртуальное окружение
+│   ├── Scripts/                  
+│   ├── Lib/
 │   └── pyvenv.cfg
 │
-├── manage.py              # утилита для управления проектом (runserver, migrate и т.д.)
+├── manage.py                      # утилита управления проектом
 │
-├── culinary_compass/      # конфигурация проекта
+├── culinary_compass/              # конфигурация проекта (главный пакет)
 │   ├── __init__.py
-│   ├── settings.py        # глобальные настройки типа БД, приложения, статика, шаблоны
-│   ├── urls.py            # маршрутизация верхнего уровня (подключает apps)
-│   ├── asgi.py            # точка входа для ASGI-сервера
-│   └── wsgi.py            # точка входа для WSGI-сервера
+│   ├── settings.py                # НАСТРОЙКИ: приложения, БД, шаблоны, статика
+│   ├── urls.py                    # МАРШРУТЫ: подключает urls из приложений
+│   ├── asgi.py
+│   └── wsgi.py
 │
-├── recipes/               # приложение для работы с рецептами
+├── recipes/                       # ПРИЛОЖЕНИЕ: основная логика рецептов
 │   ├── __init__.py
-│   ├── admin.py           # регистрация моделей в админке
-│   ├── apps.py            # конфигурация приложения
-│   ├── models.py          # модель Recipe (название, ингредиенты, инструкции, pinned)
-│   ├── views.py           # логика отображения (все рецепты, закреплённые)
-│   ├── urls.py            # маршруты приложения
-│   ├── tests.py           # тесты для проверки функционала
-│   └── templates/
-│       └── recipes/
-│           ├── all.html   # страница со всеми рецептами
-│           └── pinned.html # страница с закреплёнными рецептами
+│   ├── admin.py                   # РЕГИСТРАЦИЯ МОДЕЛЕЙ в админке
+│   ├── apps.py                    # конфигурация приложения
+│   ├── models.py                  # МОДЕЛИ: Recipe, Ingredient
+│   ├── views.py                   # ПРЕДСТАВЛЕНИЯ: home, search, all_recipes, recipe_detail
+│   ├── urls.py                    # МАРШРУТЫ: /, /search/, /recipes/, /recipe/<id>/
+│   ├── forms.py                   # ФОРМЫ: IngredientSearchForm
+│   ├── tests.py
+│   └── migrations/                # МИГРАЦИИ БД (создаются автоматически)
+│       └── __init__.py
 │
-├── parser/                # приложение для парсинга рецептов
+├── favorites/                     # ПРИЛОЖЕНИЕ: избранные рецепты пользователей
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
-│   ├── views.py           # обработка поиска по ингредиентам
-│   ├── urls.py            # маршруты приложения
+│   ├── models.py                  # МОДЕЛЬ: Favorite (связь User-Recipe)
+│   ├── views.py                   # ПРЕДСТАВЛЕНИЯ: favorite_recipes, add/remove
+│   ├── urls.py                    # МАРШРУТЫ: /favorites/, /favorites/add/<id>/
 │   ├── tests.py
-│   └── templates/
-│       └── parser/
-│           ├── search.html # форма ввода ингредиентов
-│           └── results.html # страница с результатами парсинга
+│   └── migrations/
+│       └── __init__.py
 │
-├── static/                # общие статические файлы (CSS, JS, картинки)
+├── users/                         # ПРИЛОЖЕНИЕ: регистрация пользователей
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── views.py                   # ПРЕДСТАВЛЕНИЕ: register
+│   ├── urls.py                    # МАРШРУТЫ: /users/register/
+│   ├── forms.py                   # ФОРМА: CustomUserCreationForm
+│   ├── tests.py
+│   └── migrations/
+│       └── __init__.py
+│
+├── templates/                     # ГЛОБАЛЬНЫЕ ШАБЛОНЫ (указывается в settings.py)
+│   ├── base.html                  # БАЗОВЫЙ ШАБЛОН: навигация, стили
+│   ├── recipes/                   # ШАБЛОНЫ для приложения recipes
+│   │   ├── home.html              # главная страница
+│   │   ├── search.html            # форма поиска по ингредиентам
+│   │   ├── search_results.html    # результаты поиска
+│   │   ├── all_recipes.html       # все рецепты
+│   │   └── recipe_detail.html     # детальная страница рецепта
+│   ├── favorites/                 # ШАБЛОНЫ для приложения favorites
+│   │   └── favorite_recipes.html  # избранные рецепты пользователя
+│   └── users/                     # ШАБЛОНЫ для приложения users
+│       ├── register.html          # регистрация
+│       └── login.html             # вход (или в registration/login.html)
+│
+├── static/                        # СТАТИЧЕСКИЕ ФАЙЛЫ (CSS, JS, изображения)
 │   ├── css/
 │   │   └── style.css
-│   └── js/
-│       └── script.js
+│   ├── js/
+│   │   └── script.js
+│   └── images/
+│       └── logo.png
 │
-└── templates/             # глобальные шаблоны типа base.html
-
-===========================================================================================
-Если что-то непонятно, спрашивайте
-===========================================================================================
