@@ -15,13 +15,13 @@ def recipe_search(request):
         if form.is_valid():
             user_ingredients = [x.strip().lower() for x in form.cleaned_data['ingredients'].split(',')]
             
-            # Поиск рецептов по ингредиентам
+
             recipes = Recipe.objects.all()
             matching_recipes = []
             
             for recipe in recipes:
                 recipe_ingredients = [ing.name.lower() for ing in recipe.ingredients.all()]
-                # Подсчет совпадений
+
                 matches = sum(1 for user_ing in user_ingredients 
                             if any(user_ing in recipe_ing for recipe_ing in recipe_ingredients))
                 
