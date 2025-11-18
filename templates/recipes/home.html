@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная - Кулинарный компас{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1 class="hero-title">🍳 Кулинарный компас</h1>
+    <p class="hero-subtitle">
+        Найди идеальный рецепт по тем ингредиентам, которые есть у тебя дома!
+    </p>
+</div>
+
+<div class="features-grid">
+    <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Умный поиск</h3>
+        <p>Введи ингредиенты, которые есть под рукой, и мы найдем подходящие рецепты</p>
+        <a href="{% url 'recipe_search' %}" class="btn">Начать поиск</a>
+    </div>
+    
+    <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Коллекция рецептов</h3>
+        <p>Изучи нашу полную коллекцию рецептов от шеф-поваров и кулинаров</p>
+        <a href="{% url 'all_recipes' %}" class="btn">Смотреть все</a>
+    </div>
+    
+    {% if user.is_authenticated %}
+    <div class="feature-card">
+        <div class="feature-icon">❤️</div>
+        <h3>Избранное</h3>
+        <p>Сохраняй понравившиеся рецепты в своем личном разделе</p>
+        <a href="{% url 'favorite_recipes' %}" class="btn">Мои рецепты</a>
+    </div>
+    {% endif %}
+</div>
+
+{% if not user.is_authenticated %}
+<div class="cta-section">
+    <h3>Присоединяйся!</h3>
+    <p>Зарегистрируйся, чтобы сохранять рецепты в избранное</p>
+    <a href="{% url 'register' %}" class="btn">Зарегистрироваться</a>
+</div>
+{% endif %}
+{% endblock %}

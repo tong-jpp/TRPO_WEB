@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Результаты поиска - Кулинарный компас{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/recipes.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 1rem; color: #2c3e50;">🔍 Результаты поиска</h1>
+
+<div class="search-info">
+    <p><strong>Искали:</strong> {{ search_ingredients|join:", " }}</p>
+    <p><strong>Найдено рецептов:</strong> {{ recipes_data|length }}</p>
+</div>
+
+{% if recipes_data %}
+    <div class="recipe-grid">
+        {% for recipe_data in recipes_data %}
+            <div class="recipe-card">
+                {% if recipe_data.recipe.image %}
+                    <img src="{{ recipe_data.recipe.image.url }}" alt="{{ recipe_data.recipe.title }}" class="recipe-image">
+                {% else %}
+                    <div style="width: 100%; height: 200px; background: #ecf0f1; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-bottom: 1rem;">
+                        <span style="color: #7f8c8d;">📷 Нет изображения</span>
+                    </div>
+                {% endif %}
+                
+                <h3 class="recipe-title">
+                    <a href="{% url 'recipe_detail' recipe_data.recipe.id %}" style="color: inherit; text-decoration: none;">
+                        {{ recipe_data.recipe.title }}
+                    </a>
+                </h3>
+                
+                <div class="recipe-meta">
+                    <div>⏱️ {{ recipe_data.recipe.cooking_time }} мин.</div>
+                    <div>👨‍🍳 {{ recipe_data.recipe.author.username }}</div>
+                    <div style="margin-top: 0.5rem;">
+                        <span class="match-percentage">Совпадение: {{ recipe_data.match_percentage|floatformat:0 }}%</span>
+                    </div>
+                </div>
+                
+                <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 1rem;">
+                    {{ recipe_data.recipe.description|truncatewords:20 }}
+                </p>
+                
+                <a href="{% url 'recipe_detail' recipe_data.recipe.id %}" class="btn" style="width: 100%; text-align: center;">
+                    Смотреть рецепт
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <h3>😔 Рецепты не найдены</h3>
+        <p>Попробуйте изменить список ингредиентов или посмотрите <a href="{% url 'all_recipes' %}">все рецепты</a></p>
+        <a href="{% url 'recipe_search' %}" class="btn" style="margin-top: 1rem;">Попробовать снова</a>
+    </div>
+{% endif %}
+{% endblock %}
