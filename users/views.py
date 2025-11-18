@@ -18,3 +18,5 @@ def register(request):
         form = CustomUserCreationForm()
     
     return render(request, 'users/register.html', {'form': form})
+
+
