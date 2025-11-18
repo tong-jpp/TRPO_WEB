@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Все рецепты {% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/all_resipes.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="all-recipes-container">
+    <h1>Все рецепты</h1>
+    
+    {% if recipes %}
+        <div class="recipes-grid">
+            {% for recipe in recipes %}
+            <div class="recipe-card">
+                {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-image">
+                {% else %}
+                    <div class="recipe-image-placeholder">Нет изображения</div>
+                {% endif %}
+                
+                <div class="recipe-content">
+                    <h3 class="recipe-title">{{ recipe.title }}</h3>
+                    <p class="recipe-description">{{ recipe.description|truncatewords:20 }}</p>
+                    
+                    <div class="recipe-meta">
+                        <span class="cooking-time">⏱ {{ recipe.cooking_time }} мин.</span>
+                        <span class="difficulty">📊 {{ recipe.get_difficulty_display }}</span>
+                    </div>
+                    
+                    <div class="recipe-ingredients">
+                        <strong>Ингредиенты:</strong>
+                        <ul>
+                            {% for ingredient in recipe.ingredients.all|slice:":3" %}
+                                <li>{{ ingredient.name }}</li>
+                            {% endfor %}
+                            {% if recipe.ingredients.count > 3 %}
+                                <li>... и еще {{ recipe.ingredients.count|add:"-3" }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Посмотреть рецепт</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-recipes">
+            <p>Рецептов пока нет в базе данных.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
