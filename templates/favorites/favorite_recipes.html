@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Избранное{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/favorites.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="favorites-recipes-container">
+    <h1>❤️ Избранные</h1>
+</div>
+
+{% if favorites %}
+    <div class="favorite-recipe-grid">
+        {% for favorite in favorites %}
+            {% with recipe=favorite.recipe %}
+                <div class="favorite-recipe-card">
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                    {% else %}
+                        <div class="recipe-image-placeholder">Нет изображения</div>
+                    {% endif %}
+
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">{{ recipe.title }}</h3>
+                        <p class="recipe-description">{{ recipe.description }}</p>
+
+                        <div class="recipe-meta">
+                            <span class="cooking-time">⏱ {{ recipe.cooking_time }} мин.</span>
+                            <span class="difficulty">📊 {{ recipe.get_difficulty_display }}</span>
+                        </div>
+
+                        <div class="recipe-ingredients">
+                            <strong>Ингредиенты:</strong>
+                            <ul>
+                                {% for ingredient in recipe.ingredients.all|slice:":3" %}
+                                    <li>{{ ingredient.name }}</li>
+                                {% endfor %}
+                                {% if recipe.ingredients.count > 3 %}
+                                    <li>... и еще {{ recipe.ingredients.count|add:"-3" }}</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Посмотреть рецепт</a>
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="no-favorites">
+        <p>Нет избранных</p>
+    </div>
+{% endif %}
+
+{% endblock %}
