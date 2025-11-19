@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
+<!-- {% block extra_css %} 
+<link rel="stylesheet" href="{% static 'css/forms.css'%}">
+{% endblock %} -->
 
 {% block title %}Поиск рецептов - Кулинарный компас{% endblock %}
 
 {% block content %}
 <div style="max-width: 600px; margin: 0 auto;">
-    <h1 style="text-align: center; margin-bottom: 2rem; color: #2c3e50;">🔍 Поиск рецептов</h1>
+    <h1 style="text-align: center; margin-bottom: 2rem; color: #ffffff;">🔍 Поиск рецептов</h1>
     
     <div class="search-form">
         <form method="post">
@@ -24,14 +27,14 @@
                 {% endif %}
             </div>
             
-            <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
-                🍳 Найти рецепты
+            <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.1rem; display: flex; justify-content: center;">
+                <p>🍳 Найти рецепты</p>
             </button>
         </form>
     </div>
     
     <div style="margin-top: 2rem; text-align: center;">
-        <p style="color: #7f8c8d;">Примеры: "помидоры, лук, чеснок, масло" или "курица, рис, овощи"</p>
+        <p style="color: #ffffff;">Примеры: "помидоры, лук, чеснок, масло" или "курица, рис, овощи"</p>
     </div>
 </div>
 {% endblock %}

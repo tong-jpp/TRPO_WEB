@@ -6,7 +6,8 @@ class IngredientSearchForm(forms.Form):
         widget=forms.Textarea(attrs={
             'placeholder': 'Введите ингредиенты через запятую\nНапример: помидоры, лук, чеснок, масло',
             'rows': 3,
-            'class': 'form-control'
+            'class': 'form-control',
+                'style': 'resize: none;' 
         }),
         help_text='Перечислите ингредиенты, которые у вас есть'
     )
