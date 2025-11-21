@@ -9,4 +9,6 @@ urlpatterns = [
     path('search/', views.recipe_search, name='recipe_search'),
     path('recipes/', views.all_recipes, name='all_recipes'),
     path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipe_detail'),
+    path('autocomplete/', views.ingredient_autocomplete, name='ingredient_autocomplete'),
+
 ]

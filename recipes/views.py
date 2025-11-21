@@ -6,6 +6,10 @@ from .forms import IngredientSearchForm
 from favorites.models import Favorite
 from django.shortcuts import render
 
+
+from django.http import JsonResponse
+from .models import Ingredient
+
 def home(request):
     return render(request, 'recipes/home.html')
 
@@ -59,3 +63,15 @@ def recipe_detail(request, recipe_id):
         'recipe': recipe,
         'is_favorite': is_favorite
     })
+
+
+def ingredient_autocomplete(request):
+    query = request.GET.get('term', '').lower()
+    if query:
+        ingredients = Ingredient.objects.all()
+        suggestions = [
+            ing.name for ing in ingredients
+            if query in ing.name.lower() 
+        ][:5]
+        return JsonResponse(suggestions, safe=False)
+    return JsonResponse([], safe=False)
