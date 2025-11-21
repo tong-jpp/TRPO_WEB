@@ -29,7 +29,7 @@ def recipe_search(request):
                     matching_recipes.append({
                         'recipe': recipe,
                         'match_count': matches,
-                        'match_percentage': (matches / len(user_ingredients)) * 100
+                        'match_percentage': (matches / len(recipe_ingredients)) * 100
                     })
             
             # Сортировка по проценту совпадений
