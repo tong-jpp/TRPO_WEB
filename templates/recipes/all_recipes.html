@@ -5,7 +5,7 @@
 {% block title %} Все рецепты {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/all_resipes.css' %}">
+<link rel="stylesheet" href="{% static 'css/all_recipes.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -36,11 +36,13 @@
         </div>
 
         <button type="submit" class="btn btn-secondary">Применить фильтры</button>
+        <button class="btn btn-secondary" type="submit"><a href="{% url 'all_recipes' %}" style="text-decoration: none; color: white;" >Сбросить фильтры</a></button>
+
     </form>
 </div>
 
 <div class="all-recipes-container">
-    <h1>Все рецепты</h1>
+    <h1>🍽️ Все рецепты</h1>
     
     {% if recipes %}
         <div class="recipes-grid">
