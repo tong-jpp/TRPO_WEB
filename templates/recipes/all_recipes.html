@@ -5,12 +5,44 @@
 {% block title %} Все рецепты {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/all_resipes.css' %}">
+<link rel="stylesheet" href="{% static 'css/all_recipes.css' %}">
 {% endblock %}
 
 {% block content %}
+<div class="filters-container" style="margin-bottom: 20px;">
+    <form method="get" class="filters-form">
+        <div class="filter-item">
+            <label for="time_min">Время от:</label>
+            <input type="number" id="time_min" name="time_min" value="{{ request.GET.time_min }}">
+        </div>
+
+        <div class="filter-item">
+            <label for="time_max">Время до:</label>
+            <input type="number" id="time_max" name="time_max" value="{{ request.GET.time_max }}">
+        </div>
+
+        <div class="filter-item">
+            <label for="ingredients_count">ОТ Кол-во ингредиентов:</label>
+            <input type="number" id="ingredients_count" name="ingredients_count" value="{{ request.GET.ingredients_count }}">
+        </div>
+
+        <div class="filter-item">
+            <label for="order">Сортировка:</label>
+            <select id="order" name="order">
+                <option value="">По умолчанию</option>
+                <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>А–Я</option>
+                <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Я–А</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-secondary">Применить фильтры</button>
+        <button class="btn btn-secondary" type="submit"><a href="{% url 'all_recipes' %}" style="text-decoration: none; color: white;" >Сбросить фильтры</a></button>
+
+    </form>
+</div>
+
 <div class="all-recipes-container">
-    <h1>Все рецепты</h1>
+    <h1>🍽️ Все рецепты</h1>
     
     {% if recipes %}
         <div class="recipes-grid">

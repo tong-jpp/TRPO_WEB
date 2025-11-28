@@ -37,4 +37,31 @@
         <p style="color: #ffffff;">Примеры: "помидоры, лук, чеснок, масло" или "курица, рис, овощи"</p>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+
+<script>
+$(function() {
+    $("#id_ingredients").autocomplete({
+        source: function(request, response) {
+            let terms = request.term.split(",");
+            let lastTerm = terms[terms.length - 1].trim();
+
+            $.getJSON("/autocomplete/", { term: lastTerm }, function(data) {
+                response(data);
+            });
+        },
+        focus: function() { return false; },
+        select: function(event, ui) {
+            let terms = this.value.split(",");
+            terms.pop();
+            terms.push(ui.item.value);
+            this.value = terms.join(", ") + ", ";
+            return false;
+        }
+    });
+});
+</script>
+
 {% endblock %}
