@@ -19,17 +19,28 @@ def recipe_search(request):
     if request.method == 'POST':
         form = IngredientSearchForm(request.POST)
         if form.is_valid():
-            user_ingredients = [x.strip().lower() for x in form.cleaned_data['ingredients'].split(',')]
-            
-
+            user_ingredients = [x.strip().lower() for x in form.cleaned_data['ingredients'].split(',')]      
             recipes = Recipe.objects.all()
             matching_recipes = []
             
             for recipe in recipes:
                 recipe_ingredients = [ing.name.lower() for ing in recipe.ingredients.all()]
-
-                matches = sum(1 for user_ing in user_ingredients 
-                            if any(user_ing in recipe_ing for recipe_ing in recipe_ingredients))
+                
+                base_ingredients = []
+                for ing in recipe_ingredients:
+                    if "(" in ing or ")" in ing:
+                        base_ingredients.append(ing[:ing.find("(")].strip())
+                    else:
+                        base_ingredients.append(ing.strip())
+                
+                matches = 0
+                for user_ing in user_ingredients:
+                    if "(" in user_ing or ")" in user_ing:
+                        if user_ing in recipe_ingredients:
+                            matches += 1
+                    else:
+                        if user_ing in base_ingredients:
+                            matches += 1
                 
                 if matches > 0:
                     matching_recipes.append({
@@ -38,7 +49,6 @@ def recipe_search(request):
                         'match_percentage': (matches / len(recipe_ingredients)) * 100
                     })
             
-            # Сортировка по проценту совпадений
             matching_recipes.sort(key=lambda x: x['match_percentage'], reverse=True)
             
             return render(request, 'recipes/search_results.html', {
