@@ -42,7 +42,7 @@
 </div>
 
 <div class="all-recipes-container">
-    <h1>🍽️ Все рецепты</h1>
+    <h1>Все рецепты</h1>
     
     {% if recipes %}
         <div class="recipes-grid">
@@ -59,7 +59,7 @@
                     <p class="recipe-description">{{ recipe.description|truncatewords:20 }}</p>
                     
                     <div class="recipe-meta">
-                        <span class="cooking-time">⏱ {{ recipe.cooking_time }} мин.</span>
+                        <span class="cooking-time">⏱️ {{ recipe.cooking_time }} мин.</span>
                         <span class="difficulty">📊 {{ recipe.get_difficulty_display }}</span>
                     </div>
                     
