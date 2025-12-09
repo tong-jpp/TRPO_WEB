@@ -6,6 +6,12 @@ from .forms import IngredientSearchForm
 from favorites.models import Favorite
 from django.shortcuts import render
 
+
+from django.http import JsonResponse
+from .models import Ingredient
+
+from django.db.models import Count
+
 def home(request):
     return render(request, 'recipes/home.html')
 
@@ -13,26 +19,36 @@ def recipe_search(request):
     if request.method == 'POST':
         form = IngredientSearchForm(request.POST)
         if form.is_valid():
-            user_ingredients = [x.strip().lower() for x in form.cleaned_data['ingredients'].split(',')]
-            
-
+            user_ingredients = [x.strip().lower() for x in form.cleaned_data['ingredients'].split(',')]      
             recipes = Recipe.objects.all()
             matching_recipes = []
             
             for recipe in recipes:
                 recipe_ingredients = [ing.name.lower() for ing in recipe.ingredients.all()]
-
-                matches = sum(1 for user_ing in user_ingredients 
-                            if any(user_ing in recipe_ing for recipe_ing in recipe_ingredients))
+                
+                base_ingredients = []
+                for ing in recipe_ingredients:
+                    if "(" in ing or ")" in ing:
+                        base_ingredients.append(ing[:ing.find("(")].strip())
+                    else:
+                        base_ingredients.append(ing.strip())
+                
+                matches = 0
+                for user_ing in user_ingredients:
+                    if "(" in user_ing or ")" in user_ing:
+                        if user_ing in recipe_ingredients:
+                            matches += 1
+                    else:
+                        if user_ing in base_ingredients:
+                            matches += 1
                 
                 if matches > 0:
                     matching_recipes.append({
                         'recipe': recipe,
                         'match_count': matches,
-                        'match_percentage': (matches / len(user_ingredients)) * 100
+                        'match_percentage': (matches / len(recipe_ingredients)) * 100
                     })
             
-            # Сортировка по проценту совпадений
             matching_recipes.sort(key=lambda x: x['match_percentage'], reverse=True)
             
             return render(request, 'recipes/search_results.html', {
@@ -46,8 +62,34 @@ def recipe_search(request):
     return render(request, 'recipes/search.html', {'form': form})
 
 def all_recipes(request):
-    recipes = Recipe.objects.all().order_by('-created_at')
-    return render(request, 'recipes/all_recipes.html', {'recipes': recipes})
+    time_min = request.GET.get("time_min")
+    time_max = request.GET.get("time_max")
+    ingredients_count = request.GET.get("ingredients_count")
+    order = request.GET.get("order")
+
+    if time_min and int(time_min) < 0:
+        time_min = None
+    if time_max and int(time_max) < 0:
+        time_max = None
+    if ingredients_count and int(ingredients_count) < 0:
+        ingredients_count = None
+
+    recipes = Recipe.objects.all()
+
+    if time_min:
+        recipes = recipes.filter(cooking_time__gte=time_min)
+    if time_max:
+        recipes = recipes.filter(cooking_time__lte=time_max)
+    if ingredients_count:
+        recipes = recipes.annotate(num_ing=Count("ingredients")).filter(num_ing__gte=ingredients_count)
+
+    if order == "asc":
+        recipes = recipes.order_by("title")
+    elif order == "desc":
+        recipes = recipes.order_by("-title")
+
+    return render(request, "recipes/all_recipes.html", {"recipes": recipes})
+
 
 def recipe_detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
@@ -59,3 +101,15 @@ def recipe_detail(request, recipe_id):
         'recipe': recipe,
         'is_favorite': is_favorite
     })
+
+
+def ingredient_autocomplete(request):
+    query = request.GET.get('term', '').lower()
+    if query:
+        ingredients = Ingredient.objects.all()
+        suggestions = [
+            ing.name for ing in ingredients
+            if query in ing.name.lower() 
+        ][:5]
+        return JsonResponse(suggestions, safe=False)
+    return JsonResponse([], safe=False)

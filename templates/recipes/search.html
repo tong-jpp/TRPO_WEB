@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
+<!-- {% block extra_css %} 
+<link rel="stylesheet" href="{% static 'css/forms.css'%}">
+{% endblock %} -->
 
 {% block title %}Поиск рецептов - Кулинарный компас{% endblock %}
 
 {% block content %}
 <div style="max-width: 600px; margin: 0 auto;">
-    <h1 style="text-align: center; margin-bottom: 2rem; color: #2c3e50;">🔍 Поиск рецептов</h1>
+    <h1 style="text-align: center; margin-bottom: 2rem; color: #ffffff;">🔍 Поиск рецептов</h1>
     
     <div class="search-form">
         <form method="post">
@@ -24,14 +27,41 @@
                 {% endif %}
             </div>
             
-            <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
-                🍳 Найти рецепты
+            <button type="submit" class="btn" style="width: 100%; padding: 1rem; font-size: 1.1rem; display: flex; justify-content: center;">
+                <p>🍳 Найти рецепты</p>
             </button>
         </form>
     </div>
     
     <div style="margin-top: 2rem; text-align: center;">
-        <p style="color: #7f8c8d;">Примеры: "помидоры, лук, чеснок, масло" или "курица, рис, овощи"</p>
+        <p style="color: #ffffff;">Примеры: "помидоры, лук, чеснок, масло" или "курица, рис, овощи"</p>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+
+<script>
+$(function() {
+    $("#id_ingredients").autocomplete({
+        source: function(request, response) {
+            let terms = request.term.split(",");
+            let lastTerm = terms[terms.length - 1].trim();
+
+            $.getJSON("/autocomplete/", { term: lastTerm }, function(data) {
+                response(data);
+            });
+        },
+        focus: function() { return false; },
+        select: function(event, ui) {
+            let terms = this.value.split(",");
+            terms.pop();
+            terms.push(ui.item.value);
+            this.value = terms.join(", ") + ", ";
+            return false;
+        }
+    });
+});
+</script>
+
 {% endblock %}

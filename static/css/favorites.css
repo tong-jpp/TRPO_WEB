@@ -1,0 +1,95 @@
+/* Общий контейнер */
+.favorites-recipes-container {
+    text-align: center;
+    margin: 30px 0;
+}
+ .favorites-recipes-container h1{
+    color: #fff;
+ }
+
+/* Сетка карточек */
+.favorite-recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+}
+
+/* Карточка рецепта */
+.favorite-recipe-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.favorite-recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Изображение рецепта */
+.favorite-recipe-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Плейсхолдер изображения */
+.recipe-image-placeholder {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    color: #888;
+    font-style: italic;
+}
+
+/* Контент карточки */
+.recipe-content {
+    padding: 15px;
+}
+
+.recipe-title {
+    font-size: 1.2rem;
+    margin: 0 0 8px 0;
+}
+
+.recipe-description {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Метаданные */
+.recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+/* Ингредиенты */
+.recipe-ingredients ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin: 5px 0 10px 0;
+}
+
+.recipe-ingredients li {
+    font-size: 0.9rem;
+}
+
+
+
+/* Сообщение, если нет избранных */
+.no-favorites {
+    text-align: center;
+    margin: 50px 0;
+    font-size: 1.1rem;
+    color: #888;
+}
