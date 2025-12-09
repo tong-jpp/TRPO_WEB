@@ -108,3 +108,5 @@ def ingredient_autocomplete(request):
         ][:5]
         return JsonResponse(suggestions, safe=False)
     return JsonResponse([], safe=False)
+def favorites(request):
+    return render(request, "favorite_recipes.html")
