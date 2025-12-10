@@ -13,17 +13,17 @@
     <form method="get" class="filters-form">
         <div class="filter-item">
             <label for="time_min">Время от:</label>
-            <input type="number" id="time_min" name="time_min" value="{{ request.GET.time_min }}">
+            <input type="number" id="time_min" name="time_min" value="{{ request.GET.time_min }}" min="0">
         </div>
 
         <div class="filter-item">
             <label for="time_max">Время до:</label>
-            <input type="number" id="time_max" name="time_max" value="{{ request.GET.time_max }}">
+            <input type="number" id="time_max" name="time_max" value="{{ request.GET.time_max }}" min="0">
         </div>
 
         <div class="filter-item">
             <label for="ingredients_count">ОТ Кол-во ингредиентов:</label>
-            <input type="number" id="ingredients_count" name="ingredients_count" value="{{ request.GET.ingredients_count }}">
+            <input type="number" id="ingredients_count" name="ingredients_count" value="{{ request.GET.ingredients_count }}" min="0">
         </div>
 
         <div class="filter-item">
@@ -60,7 +60,6 @@
                     
                     <div class="recipe-meta">
                         <span class="cooking-time">⏱️ {{ recipe.cooking_time }} мин.</span>
-                        <span class="difficulty">📊 {{ recipe.get_difficulty_display }}</span>
                     </div>
                     
                     <div class="recipe-ingredients">
