@@ -1,10 +1,8 @@
-/* auth.css - стили для входа и регистрации */
-
 /* Общий контейнер */
 .auth-container {
-    max-width: 420px;
-    margin: 4rem auto;
-    padding: 2.5rem;
+    max-width: 380px;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
     background: var(--bg-white);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -14,34 +12,34 @@
 
 /* Заголовки */
 .auth-container h2 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.2rem;
     color: var(--primary-color);
-    text-shadow: 0 1px 6px rgba(0,0,0,0.1);
 }
 
 /* Поля формы */
 .auth-container form p {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
     text-align: left;
 }
 
 .auth-container label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     font-weight: 600;
     color: var(--text-dark);
+    font-size: 0.9rem;
 }
 
 .auth-container input[type="text"],
 .auth-container input[type="email"],
 .auth-container input[type="password"] {
     width: 100%;
-    padding: 0.9rem 1rem;
+    padding: 0.7rem 0.8rem;
     border: 2px solid #e1e8ed;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: var(--transition);
     background: var(--bg-light);
     color: var(--text-dark);
@@ -56,17 +54,17 @@
 /* Кнопки */
 .auth-container button {
     width: 100%;
-    padding: 1rem;
+    padding: 0.8rem;
     background: var(--primary-color);
     color: white;
     border: none;
     border-radius: 25px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
     box-shadow: var(--shadow);
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .auth-container button:hover {
@@ -77,8 +75,8 @@
 
 /* Дополнительные ссылки */
 .auth-footer {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
     color: var(--text-light);
 }
 
@@ -94,9 +92,9 @@
 }
 
 .logout-container {
-    max-width: 420px;
-    margin: 4rem auto;
-    padding: 2.5rem;
+    max-width: 380px;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
     background: var(--bg-white);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -105,15 +103,15 @@
 }
 
 .logout-container h2 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
     color: var(--primary-color);
 }
 
 .logout-container a {
     display: inline-block;
-    padding: 0.9rem 1.6rem;
+    padding: 0.7rem 1.4rem;
     background: var(--secondary-color);
     color: white;
     border-radius: 25px;
@@ -121,10 +119,35 @@
     font-weight: 600;
     transition: var(--transition);
     box-shadow: var(--shadow);
+    font-size: 0.9rem;
 }
 
 .logout-container a:hover {
     background: #3db8af;
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
+}
+
+/* Адаптивность для auth.css */
+@media (max-width: 480px) {
+    .auth-container,
+    .logout-container {
+        margin: 1rem;
+        padding: 1.2rem;
+    }
+    
+    .auth-container h2,
+    .logout-container h2 {
+        font-size: 1.2rem;
+    }
+    
+    .auth-container input[type="text"],
+    .auth-container input[type="email"],
+    .auth-container input[type="password"] {
+        padding: 0.6rem;
+    }
+    
+    .auth-container button {
+        padding: 0.7rem;
+    }
 }

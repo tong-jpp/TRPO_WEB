@@ -10,7 +10,7 @@
 {% block content %}
 
 <div class="favorites-recipes-container">
-    <h1>❤️ Избранные</h1>
+    <h1>❤️ Избранное</h1>
 </div>
 
 {% if favorites %}
@@ -45,7 +45,13 @@
                             </ul>
                         </div>
 
-                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Посмотреть рецепт</a>
+                        <div class="recipe-actions">
+                            <a href="{% url 'recipe_detail' recipe.id %}" class="btn">Посмотреть рецепт</a>
+                            <form method="post" action="{% url 'remove_favorite' recipe.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary" onclick="return confirm('Удалить из избранного?')">Удалить</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             {% endwith %}
@@ -54,6 +60,7 @@
 {% else %}
     <div class="no-favorites">
         <p>Нет избранных</p>
+        <a href="{% url 'all_recipes' %}" class="btn" style="margin-top: 10px;">Перейти к рецептам</a>
     </div>
 {% endif %}
 
