@@ -63,28 +63,33 @@ def recipe_search(request):
     return render(request, 'recipes/search.html', {'form': form})
 
 def all_recipes(request):
+    time_min = request.GET.get("time_min")
+    time_max = request.GET.get("time_max")
+    ingredients_count = request.GET.get("ingredients_count")
+    order = request.GET.get("order")
+
+    if time_min and int(time_min) < 0:
+        time_min = None
+    if time_max and int(time_max) < 0:
+        time_max = None
+    if ingredients_count and int(ingredients_count) < 0:
+        ingredients_count = None
+
     recipes = Recipe.objects.all()
 
-    time_min = request.GET.get('time_min')
-    time_max = request.GET.get('time_max')
     if time_min:
-        recipes = recipes.filter(cooking_time__gte=int(time_min))
+        recipes = recipes.filter(cooking_time__gte=time_min)
     if time_max:
-        recipes = recipes.filter(cooking_time__lte=int(time_max))
-
-    ingredients_count = request.GET.get('ingredients_count')
+        recipes = recipes.filter(cooking_time__lte=time_max)
     if ingredients_count:
-        recipes = recipes.annotate(num_ing=Count('ingredients')).filter(num_ing__gte=int(ingredients_count))
+        recipes = recipes.annotate(num_ing=Count("ingredients")).filter(num_ing__gte=ingredients_count)
 
-    order = request.GET.get('order')
-    if order == 'asc':
-        recipes = recipes.order_by('title')
-    elif order == 'desc':
-        recipes = recipes.order_by('-title')
-    else:
-        recipes = recipes.order_by('-created_at')
+    if order == "asc":
+        recipes = recipes.order_by("title")
+    elif order == "desc":
+        recipes = recipes.order_by("-title")
 
-    return render(request, 'recipes/all_recipes.html', {'recipes': recipes})
+    return render(request, "recipes/all_recipes.html", {"recipes": recipes})
 
 
 def recipe_detail(request, recipe_id):
