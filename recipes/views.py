@@ -118,15 +118,18 @@ def ingredient_autocomplete(request):
 def favorites(request):
     return render(request, "favorite_recipes.html")
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def remove_favorite(request, recipe_id):
-    if request.user.is_authenticated:
-        try:
-            favorite = Favorite.objects.get(user=request.user, recipe_id=recipe_id)
-            favorite.delete()
-            messages.success(request, "Рецепт удален из избранного.")
-        except Favorite.DoesNotExist:
-            messages.info(request, "Этот рецепт уже не в избранном.")
-        
-        return redirect('favorite_recipes')
-    else:
-        return redirect('login')
+    """Удаление рецепта из избранного с защитой от повторного удаления"""
+    try:
+        favorite = Favorite.objects.get(user=request.user, recipe_id=recipe_id)
+        favorite.delete()
+        messages.success(request, "Рецепт удален из избранного.")
+    except Favorite.DoesNotExist:
+        messages.info(request, "Этот рецепт уже не в избранном.")
+    
+    return redirect('favorite_recipes')

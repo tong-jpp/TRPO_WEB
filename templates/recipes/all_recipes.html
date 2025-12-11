@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
-{% block title %} Все рецепты {% endblock %}
+{% block title %}Все рецепты{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/all_recipes.css' %}">
@@ -12,18 +11,24 @@
 <div class="filters-container">
     <form method="get" class="filters-form">
         <div class="filter-item">
-            <label for="time_min">Время от:</label>
-            <input type="number" id="time_min" name="time_min" value="{{ request.GET.time_min }}" min="0">
+            <label for="time_min">Время от (мин):</label>
+            <input type="number" id="time_min" name="time_min" 
+                   value="{{ request.GET.time_min }}" min="1" max="300" 
+                   placeholder="1">
         </div>
 
         <div class="filter-item">
-            <label for="time_max">Время до:</label>
-            <input type="number" id="time_max" name="time_max" value="{{ request.GET.time_max }}" min="0">
+            <label for="time_max">Время до (мин):</label>
+            <input type="number" id="time_max" name="time_max" 
+                   value="{{ request.GET.time_max }}" min="1" max="300" 
+                   placeholder="300">
         </div>
 
         <div class="filter-item">
             <label for="ingredients_count">Кол-во ингредиентов:</label>
-            <input type="number" id="ingredients_count" name="ingredients_count" value="{{ request.GET.ingredients_count }}">
+            <input type="number" id="ingredients_count" name="ingredients_count" 
+                   value="{{ request.GET.ingredients_count }}" min="1" max="20" 
+                   placeholder="Любое">
         </div>
 
         <div class="filter-item">
@@ -36,8 +41,12 @@
         </div>
 
         <div class="filters-actions">
-            <button type="submit" class="btn btn-secondary">Применить фильтры</button>
-            <a href="{% url 'all_recipes' %}" class="btn btn-secondary">Сбросить фильтры</a>
+            <button type="submit" class="btn">
+                <i class="fas fa-filter"></i> Применить фильтры
+            </button>
+            <a href="{% url 'all_recipes' %}" class="btn btn-reset">
+                <i class="fas fa-redo"></i> Сбросить фильтры
+            </a>
         </div>
     </form>
 </div>
@@ -52,38 +61,85 @@
                 {% if recipe.image %}
                     <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-image">
                 {% else %}
-                    <div class="recipe-image-placeholder">Нет изображения</div>
+                    <div class="recipe-image-placeholder">
+                        <i class="fas fa-image"></i> Нет изображения
+                    </div>
                 {% endif %}
                 
                 <div class="recipe-content">
                     <h3 class="recipe-title">{{ recipe.title }}</h3>
-                    <p class="recipe-description">{{ recipe.description|truncatewords:15 }}</p>
                     
+                    <!-- Оставили только время приготовления, сложность убрали -->
                     <div class="recipe-meta">
-                        <span class="cooking-time">⏱️ {{ recipe.cooking_time }} мин.</span>
+                        <span class="cooking-time"><i class="fas fa-clock"></i> {{ recipe.cooking_time }} мин.</span>
                     </div>
                     
                     <div class="recipe-ingredients">
-                        <strong>Ингредиенты:</strong>
+                        <strong><i class="fas fa-carrot"></i> Ингредиенты:</strong>
                         <ul>
                             {% for ingredient in recipe.ingredients.all|slice:":3" %}
                                 <li>{{ ingredient.name }}</li>
                             {% endfor %}
                             {% if recipe.ingredients.count > 3 %}
-                                <li>... и еще {{ recipe.ingredients.count|add:"-3" }}</li>
+                                <li><i>... и еще {{ recipe.ingredients.count|add:"-3" }}</i></li>
                             {% endif %}
                         </ul>
                     </div>
                     
-                    <a href="{% url 'recipe_detail' recipe.id %}" class="btn">Посмотреть рецепт</a>
+                    <a href="{% url 'recipe_detail' recipe.id %}" class="btn">
+                        <i class="fas fa-eye"></i> Посмотреть рецепт
+                    </a>
                 </div>
             </div>
             {% endfor %}
         </div>
     {% else %}
         <div class="no-recipes">
-            <p>Рецептов пока нет в базе данных.</p>
+            <p><i class="fas fa-utensils"></i> Рецептов пока нет в базе данных.</p>
         </div>
     {% endif %}
 </div>
+
+<style>
+    /* Дополнительные стили для улучшения адаптивности фильтров */
+    .filters-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .filters-actions {
+            flex-direction: column;
+        }
+        
+        .filters-actions .btn,
+        .filters-actions .btn-reset {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        
+        .filters-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .filter-item {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .filters-container {
+            padding: 1rem;
+        }
+        
+        .filters-actions .btn,
+        .filters-actions .btn-reset {
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
 {% endblock %}

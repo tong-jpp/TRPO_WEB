@@ -6,40 +6,83 @@
     <title>{% block title %}Кулинарный компас{% endblock %}</title>
     
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     {% block extra_css %}{% endblock %}
     
-
+    <style>
+        /* Дополнительные стили для улучшения адаптивности */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Улучшенные стили для кнопок в навигации */
+        .user-info .btn {
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        /* Улучшенные стили для форм на мобильных */
+        @media (max-width: 480px) {
+            .navbar-nav {
+                justify-content: space-around;
+                width: 100%;
+            }
+            
+            .navbar-nav a {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+                flex: 1;
+                text-align: center;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Исправление для фавиконки */
+        link[rel="icon"] {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="bg-pattern"></div>
-    
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="{% url 'home' %}" class="navbar-brand">🍳 Кулинарный компас</a>
+            <a href="{% url 'home' %}" class="navbar-brand">
+                <i class="fas fa-utensils"></i> Кулинарный компас
+            </a>
+            
             <ul class="navbar-nav">
-                <li><a href="{% url 'home' %}">Главная</a></li>
-                <li><a href="{% url 'recipe_search' %}">Поиск рецептов</a></li>
-                <li><a href="{% url 'all_recipes' %}">Все рецепты</a></li>
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="{% url 'recipe_search' %}"><i class="fas fa-search"></i> Поиск</a></li>
+                <li><a href="{% url 'all_recipes' %}"><i class="fas fa-book"></i> Все рецепты</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'favorite_recipes' %}">❤️ Избранное</a></li>
+                    <li><a href="{% url 'favorite_recipes' %}"><i class="fas fa-heart"></i> Избранное</a></li>
                 {% endif %}
             </ul>
+            
             <div class="user-info">
                 {% if user.is_authenticated %}
-                    <span>Привет, {{ user.username }}!</span>
-                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-secondary">Выйти</button>
-</form>
-
+                    <span><i class="fas fa-user-circle"></i> {{ user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary btn-small">
+                            <i class="fas fa-sign-out-alt"></i> Выйти
+                        </button>
+                    </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-secondary">Войти</a>
-                    <a href="{% url 'register' %}" class="btn">Регистрация</a>
+                    <a href="{% url 'login' %}" class="btn btn-secondary btn-small">
+                        <i class="fas fa-sign-in-alt"></i> Войти
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-small">
+                        <i class="fas fa-user-plus"></i> Регистрация
+                    </a>
                 {% endif %}
             </div>
         </div>
@@ -58,7 +101,37 @@
         {% endblock %}
     </div>
 
-
     {% block extra_js %}{% endblock %}
+    
+    <script>
+        // Предотвращение двойного удаления из избранного
+        document.addEventListener('DOMContentLoaded', function() {
+            // Находим все формы удаления из избранного
+            const favoriteForms = document.querySelectorAll('form[action*="remove_favorite"]');
+            
+            favoriteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    if (submitButton) {
+                        submitButton.disabled = true;
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Удаление...';
+                    }
+                });
+            });
+            
+            // Анимация для карточек
+            const cards = document.querySelectorAll('.recipe-card, .favorite-recipe-card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    </script>
 </body>
 </html>

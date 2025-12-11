@@ -64,25 +64,20 @@
 
 .recipe-title {
     font-size: 1.1rem;
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.8rem 0;
     line-height: 1.3;
 }
 
-.recipe-description {
-    font-size: 0.85rem;
-    color: #555;
-    margin-bottom: 0.8rem;
-    flex-grow: 1;
-}
-
-/* Метаданные */
+/* ========== МЕТАДАННЫЕ (ТОЛЬКО ВРЕМЯ) ========== */
 .recipe-meta {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; /* Был space-between, теперь flex-start */
     font-size: 0.8rem;
     margin-bottom: 0.8rem;
     color: #666;
 }
+
+/* Убрал стили для .difficulty, так как убрали этот элемент */
 
 /* Ингредиенты */
 .recipe-ingredients ul {
@@ -100,10 +95,17 @@
     display: flex;
     gap: 0.5rem;
     margin-top: auto;
+    flex-wrap: wrap;
 }
 
-.recipe-actions .btn {
+.recipe-actions .btn,
+.recipe-actions form {
     flex: 1;
+    min-width: 120px;
+}
+
+.recipe-actions form .btn {
+    width: 100%;
     padding: 0.5rem;
     font-size: 0.8rem;
 }
@@ -127,6 +129,19 @@
         gap: 0.8rem;
         padding: 0 0.8rem;
     }
+    
+    .recipe-actions {
+        flex-direction: column;
+    }
+    
+    .recipe-actions .btn,
+    .recipe-actions form {
+        width: 100%;
+    }
+    
+    .recipe-meta {
+        justify-content: center; /* На мобильных центрируем время */
+    }
 }
 
 @media (max-width: 480px) {
@@ -138,10 +153,6 @@
         margin: 1.5rem 0;
         font-size: 0.9rem;
         padding: 0 1rem;
-    }
-    
-    .recipe-actions {
-        flex-direction: column;
     }
     
     .favorite-recipe-card img,
