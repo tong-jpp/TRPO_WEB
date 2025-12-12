@@ -10,7 +10,7 @@
 {% block content %}
 
 <div class="favorites-recipes-container">
-    <h1>❤️ Избранные</h1>
+    <h1>❤️ Избранное</h1>
 </div>
 
 {% if favorites %}
@@ -26,11 +26,10 @@
 
                     <div class="recipe-content">
                         <h3 class="recipe-title">{{ recipe.title }}</h3>
-                        <p class="recipe-description">{{ recipe.description }}</p>
-
+                        
+                        <!-- Оставили только время приготовления, сложность убрали -->
                         <div class="recipe-meta">
                             <span class="cooking-time">⏱ {{ recipe.cooking_time }} мин.</span>
-                            <span class="difficulty">📊 {{ recipe.get_difficulty_display }}</span>
                         </div>
 
                         <div class="recipe-ingredients">
@@ -45,7 +44,16 @@
                             </ul>
                         </div>
 
-                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Посмотреть рецепт</a>
+                        <div class="recipe-actions">
+                            <a href="{% url 'recipe_detail' recipe.id %}" class="btn">Посмотреть рецепт</a>
+                            <form method="post" action="{% url 'remove_favorite' recipe.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary" 
+                                        onclick="return confirm('Удалить из избранного?')">
+                                    Удалить
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             {% endwith %}
@@ -53,8 +61,28 @@
     </div>
 {% else %}
     <div class="no-favorites">
-        <p>Нет избранных</p>
+        <p>Нет избранных рецептов</p>
+        <a href="{% url 'all_recipes' %}" class="btn" style="margin-top: 10px;">Перейти к рецептам</a>
     </div>
 {% endif %}
+
+<script>
+// Предотвращение двойного нажатия на кнопку удаления
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteForms = document.querySelectorAll('form[action*="remove_favorite"]');
+    
+    deleteForms.forEach(form => {
+        const submitButton = form.querySelector('button[type="submit"]');
+        
+        form.addEventListener('submit', function(e) {
+            // Отключаем кнопку на время отправки
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Удаление...';
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}
