@@ -71,8 +71,75 @@
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 0.4rem;
 }
+
+/* Сетка карточек в результатах поиска */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+/* Общий стиль карточки рецепта (поиск, списки) */
 .recipe-card {
-    background-color: #ffffff;
+    background: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Картинка в карточке */
+.recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+}
+
+/* Заголовок */
+.recipe-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+/* Метаданные (время, автор, совпадение) */
+.recipe-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.6rem;
+}
+
+.match-percentage {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Краткое описание */
+.recipe-description {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* Кнопка внизу карточки */
+.recipe-card .btn {
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
 }
 
 .ingredients-list {
@@ -179,6 +246,28 @@
     font-size: 0.8rem;
     font-weight: 600;
 }
+.back-to-search {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.back-to-search-btn {
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    background: var(--primary-color);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.back-to-search-btn:hover {
+    background: #ff6b81; /* или чуть темнее primary */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
 
 /* Адаптивность для recipes.css */
 @media (max-width: 768px) {
