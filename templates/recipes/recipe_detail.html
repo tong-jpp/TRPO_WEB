@@ -53,11 +53,16 @@
         </div>
         
         <div class="recipe-actions">
-            {% if source != "all"  %}
-            <a href="{% url 'favorite_recipes' %}" class="btn btn-secondary">← Назад к рецептам</a>
-            {% else %}
-            <a href="{% url 'all_recipes' %}" class="btn btn-secondary">← Назад к рецептам</a>
-            {%endif%}
+           {% if source == "all" %}
+                <a href="{% url 'all_recipes' %}" class="btn btn-secondary">← Назад к рецептам</a>
+            {% elif source == "fav" %}
+                <a href="{% url 'favorite_recipes' %}" class="btn btn-secondary">← Назад к избранным рецептам</a>
+            {% elif source == "search" %}
+                <a href="{% url 'recipe_search' %}" class="btn btn-secondary">← Назад к поиску</a>
+            {%else%}
+                <a href="{% url 'all_recipes' %}" class="btn btn-secondary">← Назад к рецептам</a>
+
+            {% endif %}
             {% if user.is_authenticated %}
                 {% if is_favorite %}
                     <a href="{% url 'remove_from_favorites' recipe.id %}" class="btn btn-secondary">💔 Удалить из избранного</a>

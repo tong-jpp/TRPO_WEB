@@ -45,7 +45,9 @@
                         </div>
 
                         <div class="recipe-actions">
-                            <a href="{% url 'recipe_detail' recipe.id %}" class="btn">Посмотреть рецепт</a>
+                            <a href="{% url 'recipe_detail' recipe.id %}?from=fav" class="btn">
+                                Посмотреть рецепт
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -28,7 +28,7 @@
                 {% endif %}
                 
                 <h3 class="recipe-title">
-                    <a href="{% url 'recipe_detail' recipe_data.recipe.id %}" style="color: inherit; text-decoration: none;">
+                    <a href="{% url 'recipe_detail' recipe_data.recipe.id %}?from=search"style="color: inherit; text-decoration: none;">
                         {{ recipe_data.recipe.title }}
                     </a>
                 </h3>
@@ -45,9 +45,10 @@
                     {{ recipe_data.recipe.description|truncatewords:20 }}
                 </p>
                 
-                <a href="{% url 'recipe_detail' recipe_data.recipe.id %}" class="btn" style="width: 100%; text-align: center;">
-                    Смотреть рецепт
-                </a>
+                <a href="{% url 'recipe_detail' recipe_data.recipe.id %}?from=search"
+   class="btn" style="width: 100%; text-align: center;">
+    Смотреть рецепт
+</a>
             </div>
         {% endfor %}
     </div>

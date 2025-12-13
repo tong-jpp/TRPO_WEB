@@ -71,6 +71,9 @@
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 0.4rem;
 }
+.recipe-card {
+    background-color: #ffffff;
+}
 
 .ingredients-list {
     list-style: none;
