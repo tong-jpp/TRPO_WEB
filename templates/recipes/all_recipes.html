@@ -86,9 +86,10 @@
                         </ul>
                     </div>
                     
-                    <a href="{% url 'recipe_detail' recipe.id %}" class="btn">
+                    <a href="{% url 'recipe_detail' recipe.id %}?from=all" class="btn">
                         <i class="fas fa-eye"></i> Посмотреть рецепт
                     </a>
+
                 </div>
             </div>
             {% endfor %}

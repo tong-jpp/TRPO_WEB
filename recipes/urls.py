@@ -11,4 +11,5 @@ urlpatterns = [
     path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipe_detail'),
     path('autocomplete/', views.ingredient_autocomplete, name='ingredient_autocomplete'),
     
+    
 ]

@@ -53,10 +53,9 @@
         </div>
         
         <div class="recipe-actions">
-            {% if is_favorite %}
-              <a href="{% url 'favorite_recipes' %}" class="btn btn-secondary">← Назад к рецептам</a>
-            {%else%}
-
+            {% if source != "all"  %}
+            <a href="{% url 'favorite_recipes' %}" class="btn btn-secondary">← Назад к рецептам</a>
+            {% else %}
             <a href="{% url 'all_recipes' %}" class="btn btn-secondary">← Назад к рецептам</a>
             {%endif%}
             {% if user.is_authenticated %}

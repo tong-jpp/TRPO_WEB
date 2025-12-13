@@ -91,10 +91,15 @@ def recipe_detail(request, recipe_id):
     is_favorite = False
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(user=request.user, recipe=recipe).exists()
-    
+        
+    source = request.GET.get("from") 
+    print("SOURCE =", source)
+
     return render(request, 'recipes/recipe_detail.html', {
         'recipe': recipe,
-        'is_favorite': is_favorite
+        'is_favorite': is_favorite,
+        'source': source,
+
     })
 
 
